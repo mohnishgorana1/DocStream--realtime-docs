@@ -10,6 +10,7 @@ import {
   UserButton
 } from '@clerk/nextjs'
 import { dark } from "@clerk/themes";
+import Provider from "./Provider";
 
 export const metadata: Metadata = {
   title: "DocStream",
@@ -43,9 +44,13 @@ export default function RootLayout({
             fontSans.variable
           )}
         >
-          {children}
+          <Provider>   {/* Live Block Provider that has wrapping ClientSideSuspense: whole app knows liveblocks */}
+            {children}
+          </Provider>
         </body>
       </html>
+
+
     </ClerkProvider>
   );
 }
