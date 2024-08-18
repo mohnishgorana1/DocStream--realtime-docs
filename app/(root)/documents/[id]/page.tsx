@@ -1,18 +1,33 @@
-'use client'
 import CollaborativeRoom from '@/components/CollaborativeRoom'
 import Header from '@/components/Header'
+import { getDocument } from '@/lib/actions/room.actions'
+import { currentUser } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
-function Document() {
+const Document = async ({ params: { id } }: SearchParamProps) => {
+  const clerkUser = await currentUser()
+  if (!clerkUser) redirect("/sign-in")
+
+  const room = await getDocument({
+    roomId: id,
+    userId: clerkUser.emailAddresses[0].emailAddress
+  })
+  if (!room) redirect('/')
+
+  // TODO: Assess the permission level
   return (
-    <div>
+    <main className='flex w-full flex-col items-center'>
       {/* this page needs liveblock  CollaborativeRoom and room provider in it, 
         having header with live docName and and live Editor  
       */}
 
-      {/* <CollaborativeRoom /> */}
-      
-    </div>
+      <CollaborativeRoom
+        roomId={id}
+        roomMetaData={room.metadata}
+      />
+
+    </main>
   )
 }
 
