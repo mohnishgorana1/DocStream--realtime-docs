@@ -42,6 +42,8 @@ export const getDocument = async ({ roomId, userId }: { roomId: string, userId: 
         // if (!hasAccess) {
         //     throw new Error("You don't have access to this document")
         // }
+        // console.log("GET",room.metadata);
+        
         return parseStringify(room)
     } catch (error) {
         console.log("Error getting document or room", error);
@@ -49,15 +51,17 @@ export const getDocument = async ({ roomId, userId }: { roomId: string, userId: 
     }
 }
 
-
-
 export const updateDocument = async (roomId: string, title: string) => {
     try {
+        console.log("Doc to upload", roomId, title);
+
         const updatedRoom = await liveblocks.updateRoom(roomId, {
             metadata: {
                 title
             }
         })
+        console.log("Updated Document", updateDocument);
+
         revalidatePath(`/documents/${roomId}`)
         return parseStringify(updatedRoom)
     } catch (error) {
@@ -65,4 +69,20 @@ export const updateDocument = async (roomId: string, title: string) => {
 
     }
 
+}
+
+export const listDocuments = async (email: string) => {
+    try {
+        const rooms = await liveblocks.getRooms({ userId: email })
+
+        // rooms.data.map((r) => {
+        //     console.log("ID", r.id, "metadata", r.metadata);
+        // })
+        // console.log("rooms", rooms);
+
+        return parseStringify(rooms)
+    } catch (error) {
+        console.log("Error Fetching all Documents or Rooms", error);
+
+    }
 }
