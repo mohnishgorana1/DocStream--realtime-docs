@@ -1,17 +1,17 @@
-
 import AddDocumentBtn from "@/components/AddDocumentBtn";
 import Header from "@/components/Header";
-import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from 'next/navigation'
 
-
 const Home = async () => {
-
-  const clerkUser = await currentUser()
-  if (!clerkUser) redirect('/sign-in')
+  const clerkUser = await currentUser();
+  if (!clerkUser) {
+    redirect('/sign-in')
+  } else {
+    // console.log("clerkUser, ", clerkUser);
+  }
 
   const documents = [];
   return (
@@ -36,8 +36,8 @@ const Home = async () => {
           <div className="document-list-empty">
             <Image src={'/assets/icons/doc.svg'} width={40} height={40} alt="document" className="mx-auto" />
             <AddDocumentBtn
-              userId={clerkUser.id}
-              email={clerkUser.emailAddresses[0].emailAddress}
+              userId={clerkUser?.id}
+              email={clerkUser?.emailAddresses[0].emailAddress}
             />
           </div>
         )

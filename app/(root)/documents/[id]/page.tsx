@@ -24,7 +24,7 @@ const Document = async ({ params: { id } }: SearchParamProps) => {
 
       <CollaborativeRoom
         roomId={id}
-        roomMetaData={room.metadata}
+        roomMetadata={room.metadata}
       />
 
     </main>
