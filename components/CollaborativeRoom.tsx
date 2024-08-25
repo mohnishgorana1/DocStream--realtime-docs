@@ -10,14 +10,14 @@ import { currentUser } from '@clerk/nextjs/server'
 import Image from 'next/image'
 import { updateDocument } from '@/lib/actions/room.actions'
 import Loader from './Loader'
+import ShareModal from './ShareModal'
 
-function CollaborativeRoom({ roomId, roomMetadata }: CollaborativeRoomProps) {
+function CollaborativeRoom({ roomId, roomMetadata, users, currentUserType }: CollaborativeRoomProps) {
 
-    const currentUserType = "editor"
-    
+
+    const [documentTitle, setDocumentTitle] = useState(roomMetadata.title || "")
     const [editing, setEditing] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [documentTitle, setDocumentTitle] = useState(roomMetadata.title || "")
 
     const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLDivElement>(null)
@@ -58,9 +58,9 @@ function CollaborativeRoom({ roomId, roomMetadata }: CollaborativeRoomProps) {
         document.addEventListener('mousedown', handleClickOutside)
 
         return () => {
-            document.addEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [documentTitle])
+    }, [roomId, documentTitle])
 
     useEffect(() => {
         if (editing && inputRef.current) {
@@ -98,7 +98,7 @@ function CollaborativeRoom({ roomId, roomMetadata }: CollaborativeRoomProps) {
                                     height={24}
                                     alt='edit'
                                     onClick={() => setEditing(true)}
-                                    className='pointer'
+                                    className='cursor-pointer'
                                 />
                             )}
 
@@ -111,6 +111,12 @@ function CollaborativeRoom({ roomId, roomMetadata }: CollaborativeRoomProps) {
                         </div>
                         <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
                             <ActiveCollaborators />
+                            <ShareModal 
+                                roomId = {roomId}
+                                collaborators = {users}
+                                creatorId= {roomMetadata.creatorId}
+                                currentUserType = {currentUserType}
+                            />
                             <SignedOut>
                                 <SignInButton />
                             </SignedOut>
@@ -119,7 +125,7 @@ function CollaborativeRoom({ roomId, roomMetadata }: CollaborativeRoomProps) {
                             </SignedIn>
                         </div>
                     </Header>
-                    <Editor />
+                    <Editor roomId={roomId} currentUserType={currentUserType} />
                 </div>
             </ClientSideSuspense>
         </RoomProvider>
