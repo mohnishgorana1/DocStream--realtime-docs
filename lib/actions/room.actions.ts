@@ -98,7 +98,20 @@ export const updateDocumentAccess = async ({ roomId, email, userType, updatedBy 
         })
 
         if (room) {
-            // TODO Notification to invited 
+            const notificationId = nanoid();
+            await liveblocks.triggerInboxNotification({
+                userId: email,
+                kind: '$documentAccess',
+                roomId: roomId,
+                subjectId: notificationId,
+                activityData: {
+                    userType,
+                    title: `You have been granted ${userType} access to the document by ${updatedBy.name}`,
+                    updatedBy: updatedBy.name,
+                    avatar: updatedBy.avatar,
+                    email: updatedBy.email
+                }
+            })
         }
 
         revalidatePath(`/documents/${roomId}`)
@@ -129,18 +142,18 @@ export const removeCollaborator = async ({ roomId, email }: { roomId: string, em
 }
 
 
-export const deleteDocument = async (roomId:string) => {
+export const deleteDocument = async (roomId: string) => {
     try {
         const deletedRoom = await liveblocks.deleteRoom(roomId);
 
-        if(deletedRoom!){
-            console.log("Room Deleted Successfully");    
+        if (deletedRoom!) {
+            console.log("Room Deleted Successfully");
         }
 
         revalidatePath('/')
         redirect('/')
     } catch (error) {
         console.log("Error on deleting room ", error);
-        
+
     }
 }
