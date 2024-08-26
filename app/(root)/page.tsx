@@ -19,7 +19,9 @@ const Home = async () => {
   }
 
   const roomDocuments = await listDocuments(clerkUser.emailAddresses[0].emailAddress)
-  console.log(roomDocuments.data[0].metadata);
+  const roomLength = roomDocuments?.data?.length || 0
+  
+  // console.log(roomDocuments?.data[0]?.metadata);
 
   return (
     <main className="home-container">
@@ -42,6 +44,7 @@ const Home = async () => {
               <AddDocumentBtn
                 userId={clerkUser?.id}
                 email={clerkUser?.emailAddresses[0].emailAddress}
+                roomLength = {roomLength}
               />
             </div>
             <ul className="document-ul">
@@ -75,6 +78,7 @@ const Home = async () => {
             <AddDocumentBtn
               userId={clerkUser?.id}
               email={clerkUser?.emailAddresses[0].emailAddress}
+              roomLength={roomLength}
             />
           </div>
         )
