@@ -21,7 +21,7 @@ const Home = async () => {
   const roomDocuments = await listDocuments(clerkUser.emailAddresses[0].emailAddress)
   const roomLength = roomDocuments?.data?.length || 0
   
-  // console.log(roomDocuments?.data[0]?.metadata);
+  console.log(roomDocuments?.data[0]?.metadata);
 
   return (
     <main className="home-container">
@@ -37,7 +37,7 @@ const Home = async () => {
         </div>
       </Header>
       {
-        roomDocuments.data.length > 0 ? (
+        roomDocuments?.data?.length > 0 ? (
           <div className="document-list-container">
             <div className="document-list-title flex items-center ">
               <h3 className="text-28-semibold">All Documents</h3>
