@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import Loader from './Loader'
 import { BiMessageSquareAdd } from "react-icons/bi";
 import { IoDocumentText } from "react-icons/io5";
+import { Loader2 } from 'lucide-react'
 function AddDocumentBtn({ userId, email }: AddDocumentBtnProps) {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
@@ -27,24 +28,31 @@ function AddDocumentBtn({ userId, email }: AddDocumentBtnProps) {
     return (
         <>
             <Button type='submit' onClick={addDocumentHandler} className='gradient-blue gap-1 shadow-md hidden sm:flex'>
-                {isLoading! && (
-                    <Image
+                {
+                    !isLoading && <Image
                         src={'/assets/icons/add.svg'}
                         width={20} height={20} alt="add"
                     />
-                )}
-
+                }
                 <p className="">{isLoading ? <Loader /> : "Start a blank document"}</p>
             </Button>
 
             {/* <Button type='submit' onClick={addDocumentHandler} className='bg-blue-600 w-fit shadow-md sm:hidden text-xs px-2 py-0 hover:bg-blue-600'>
                 New Document
             </Button> */}
-            <BiMessageSquareAdd
-                className='p-0 size-8 bg-transparent text-blue-400 cursor-pointer'
-                onClick={addDocumentHandler}
-                type='submit'
-            />
+            {
+                !isLoading ? (
+                    <BiMessageSquareAdd
+                        className='sm:hidden p-0 size-8 bg-transparent text-blue-400 cursor-pointer'
+                        onClick={addDocumentHandler}
+                        type='submit'
+                    />
+                ) : (
+                    <Loader2 className='sm:hidden animate-spin text-blue-600 p-0 size-8' />
+
+                )
+            }
+
         </>
     )
 }
