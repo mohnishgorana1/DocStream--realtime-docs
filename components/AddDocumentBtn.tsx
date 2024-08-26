@@ -37,14 +37,14 @@ function AddDocumentBtn({ userId, email }: AddDocumentBtnProps) {
                 <p className="">{isLoading ? <Loader /> : "Start a blank document"}</p>
             </Button>
 
-            <Button type='submit' onClick={addDocumentHandler} className='bg-blue-600 w-fit shadow-md sm:hidden text-xs px-2 py-0 hover:bg-blue-600'>
+            {/* <Button type='submit' onClick={addDocumentHandler} className='bg-blue-600 w-fit shadow-md sm:hidden text-xs px-2 py-0 hover:bg-blue-600'>
                 New Document
-            </Button>
-            {/* <BiMessageSquareAdd
+            </Button> */}
+            <BiMessageSquareAdd
                 className='p-0 size-8 bg-transparent text-blue-400 cursor-pointer'
                 onClick={addDocumentHandler}
                 type='submit'
-            /> */}
+            />
         </>
     )
 }
